@@ -28,8 +28,21 @@ const users = [
 const database = require("./database");
 
 const getUsers = (req, res) => {
+    let sql = "select * from users";
+    const sqlValues = [];
+
+    if (req.query.language != null) {
+        sql += " where language = ?";
+        sqlValues.push(req.query.language);
+    }
+    if (req.query.city != null) {
+        sql += " where city = ?";
+        sqlValues.push(req.query.city);
+    }
+
+
     database
-      .query("select * from users")
+      .query(sql, sqlValues)
       .then(([users]) => {
         res.json(users);
       })
@@ -39,6 +52,7 @@ const getUsers = (req, res) => {
       });
   };
   
+
   const getUserById = (req, res) => {
     const id = parseInt(req.params.id);
   

@@ -13,7 +13,8 @@ const welcome = (req, res) => {
 app.get("/", welcome);
 
 const movieHandlers = require("./movieHandlers");
-const userHandlers = require("./userHandlers")
+const userHandlers = require("./userHandlers");
+const { hashPassword } = require("./auth");
 
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
@@ -23,7 +24,7 @@ app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
-app.post("/api/users", userHandlers.postUser);
+app.post("/api/users", hashPassword, userHandlers.postUser);
 app.put("/api/users/:id", userHandlers.updateUser);
 app.delete("/api/users/:id", userHandlers.deleteUser);
 
@@ -35,3 +36,7 @@ app.listen(port, (err) => {
     console.log(`Server is listening on ${port}`);
   }
 });
+
+
+
+
